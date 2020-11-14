@@ -1,0 +1,18 @@
+server.port: 9090
+
+
+# App Properties
+bezkoder.app.jwtSecret: bezKoderSecretKey
+bezkoder.app.jwtExpirationMs: 86400000
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: "jdbc:mysql://${MYSQL_HOST:localhost}:3306/fh_db"
+    username: admin
+    password: fh_3022480
+
+
+spring.jpa.properties.hibernate.dialect: org.hibernate.dialect.MySQL5InnoDBDialect
