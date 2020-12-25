@@ -46,7 +46,7 @@ public class AuthService {
 
     public JwtResponse authenticateUser(LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = getJwtToken(authentication);
@@ -60,7 +60,8 @@ public class AuthService {
         return new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
-                userDetails.getEmail(),
+                userDetails.getName(),
+                userDetails.getSurname(),
                 roles);
     }
 
@@ -72,14 +73,10 @@ public class AuthService {
         return userRepository.existsByEmail(email);
     }
 
-    public boolean userExistsByUsername(String username) {
-        return userRepository.existsByUsername(username);
-    }
 
     public String registerUser(SignupRequest signUpRequest) {
         // Create new user's account
-        User user = new User(signUpRequest.getUsername(),
-                signUpRequest.getEmail(),
+        User user = new User(signUpRequest.getEmail(),signUpRequest.getName(),signUpRequest.getSurname(),
                 encoder.encode(signUpRequest.getPassword()));
 
         Set<String> strRoles = signUpRequest.getRole();
@@ -114,6 +111,6 @@ public class AuthService {
 
         user.setRoles(roles);
         user.setCreatedAt(new Date());
-        return userRepository.save(user).getUsername();
+        return userRepository.save(user).getEmail();
     }
 }

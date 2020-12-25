@@ -6,6 +6,7 @@ import com.fitness.authservice.payload.response.JwtResponse;
 import com.fitness.authservice.payload.response.MessageResponse;
 import com.fitness.authservice.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,18 +24,15 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+        HttpHeaders headers = new HttpHeaders();
         JwtResponse response = authService.authenticateUser(loginRequest);
-        return ResponseEntity.ok(response);
+        headers.set("accessToken",response.getAccessToken());
+
+        return ResponseEntity.ok().headers(headers).body(response);
     }
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-
-        if (authService.userExistsByUsername(signUpRequest.getUsername())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
-        }
 
         if (authService.userExistsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
