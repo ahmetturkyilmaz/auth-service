@@ -1,5 +1,6 @@
 package com.fitness.authservice.controller;
 
+import com.fitness.authservice.exception.RequestValidationException;
 import com.fitness.authservice.payload.request.LoginRequest;
 import com.fitness.authservice.payload.request.SignupRequest;
 import com.fitness.authservice.payload.response.JwtResponse;
@@ -28,19 +29,13 @@ public class AuthController {
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         HttpHeaders headers = new HttpHeaders();
         JwtResponse response = authService.authenticateUser(loginRequest);
-        headers.set(headerString,response.getAccessToken());
+        headers.set(headerString, response.getAccessToken());
 
         return ResponseEntity.ok().headers(headers).body(response);
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-
-        if (authService.userExistsByEmail(signUpRequest.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Email is already in use!"));
-        }
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) throws RequestValidationException {
         String name = authService.registerUser(signUpRequest);
         return ResponseEntity.ok(new MessageResponse("User " + name + " registered successfully!"));
     }

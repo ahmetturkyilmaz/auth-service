@@ -1,18 +1,18 @@
 package com.fitness.authservice.service;
 
+import com.fitness.authservice.exception.RequestValidationException;
 import com.fitness.authservice.model.ERole;
 import com.fitness.authservice.model.Role;
 import com.fitness.authservice.model.User;
 import com.fitness.authservice.payload.request.LoginRequest;
 import com.fitness.authservice.payload.request.SignupRequest;
 import com.fitness.authservice.payload.response.JwtResponse;
-import com.fitness.authservice.payload.response.MessageResponse;
 import com.fitness.authservice.repository.RoleRepository;
 import com.fitness.authservice.repository.UserRepository;
 import com.fitness.authservice.security.jwt.JwtUtils;
 import com.fitness.authservice.security.services.UserDetailsImpl;
+import com.fitness.authservice.util.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -43,6 +43,8 @@ public class AuthService {
 
     @Autowired
     JwtUtils jwtUtils;
+    @Autowired
+    UserValidator userValidator;
 
     public JwtResponse authenticateUser(LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
@@ -74,11 +76,12 @@ public class AuthService {
     }
 
 
-    public String registerUser(SignupRequest signUpRequest) {
+    public String registerUser(SignupRequest signUpRequest) throws RequestValidationException {
         // Create new user's account
-        User user = new User(signUpRequest.getEmail(),signUpRequest.getName(),signUpRequest.getSurname(),
-                encoder.encode(signUpRequest.getPassword()));
 
+        User user = new User(signUpRequest.getEmail(), signUpRequest.getName(), signUpRequest.getSurname(), signUpRequest.getPassword());
+        userValidator.validateUser(user);
+        user.setPassword(encoder.encode(signUpRequest.getPassword()));
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
 
