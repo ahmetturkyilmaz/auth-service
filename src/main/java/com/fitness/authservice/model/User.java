@@ -1,25 +1,18 @@
 package com.fitness.authservice.model;
 
-import javax.persistence.*;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@Table(	name = "users",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = "email")
-        })
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@Document
+public class User extends BaseEntity {
 
     @NotBlank
     @Size(max = 20)
-    @Column(unique = true)
     private String email;
 
     @NotBlank
@@ -35,30 +28,19 @@ public class User {
     @Size(max = 120)
     private String password;
 
-    private Date createdAt;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(	name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    public User(){}
+    public User() {
+    }
 
-    public User(String email,String name,String surname, String password) {
+    public User(String email, String name, String surname, String password) {
         this.email = email;
         this.name = name;
         this.surname = surname;
         this.password = password;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getEmail() {
         return email;
@@ -90,14 +72,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
     }
 
     public Set<Role> getRoles() {

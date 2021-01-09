@@ -43,6 +43,7 @@ public class AuthService {
 
     @Autowired
     JwtUtils jwtUtils;
+
     @Autowired
     UserValidator userValidator;
 
@@ -113,7 +114,7 @@ public class AuthService {
         }
 
         user.setRoles(roles);
-        user.setCreatedAt(new Date());
+        user.setCreatedAt(new Date().getTime());
         return userRepository.save(user).getEmail();
     }
 }

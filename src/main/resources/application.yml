@@ -8,14 +8,18 @@ auth:
     jwtExpirationMs: 86400000
     header_string: Authorization
 
-spring:
-  jpa:
-    hibernate:
-      ddl-auto: update
-  datasource:
-    url: "jdbc:mysql://${MYSQL_HOST:localhost}:3306/fh_db"
-    username: admin
-    password: fh_3022480
+# --------------
+# MONGODB settings
+# --------------
+# Database name.
+spring.data.mongodb.database: auth-dev
+spring.data.mongodb.host: 192.168.0.19
+# Mongo server port. Cannot be set with URI
+spring.data.mongodb.port: 27017
+# Login user of the mongo server. Cannot be set with URI
+spring.data.mongodb.username: root
+# Login password of the mongo server. Cannot be set with URI.
+spring.data.mongodb.password: example #fh3022480db
+spring.data.mongodb.authentication-database: admin
 
 
-spring.jpa.properties.hibernate.dialect: org.hibernate.dialect.MySQL5InnoDBDialect
