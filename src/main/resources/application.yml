@@ -5,7 +5,7 @@ server.port: 9090
 auth:
   app:
     jwtSecret: ASecretOfADude
-    jwtExpirationMs: 86400000
+    jwtExpirationMs: 206400000
     header_string: Authorization
 
 # --------------

@@ -3,11 +3,13 @@ package com.fitness.authservice.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 
+import java.util.Date;
+
 public class BaseEntity {
     @Id
     private String id;
     private String createdBy;
-    private Long createdAt;
+    private Date createdAt;
     @Version
     private Long version;
 
@@ -27,11 +29,11 @@ public class BaseEntity {
         this.createdBy = createdBy;
     }
 
-    public Long getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Long createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
