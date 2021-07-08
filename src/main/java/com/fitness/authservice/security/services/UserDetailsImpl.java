@@ -1,6 +1,9 @@
 package com.fitness.authservice.security.services;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fitness.authservice.exception.RequestException;
+import com.fitness.authservice.model.Gender;
+import com.fitness.authservice.model.Unit;
 import com.fitness.authservice.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,19 +28,24 @@ public class UserDetailsImpl implements UserDetails {
     @JsonIgnore
     private String password;
 
+    private String gender;
+
+    private String unit;
+
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(String id, String username, String name, String surname, String password,
-                           Collection<? extends GrantedAuthority> authorities) {
+    public UserDetailsImpl(String id, String username, String name, String surname, String password, String gender, String unit, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.name = name;
         this.surname = surname;
         this.password = password;
+        this.gender = gender;
+        this.unit = unit;
         this.authorities = authorities;
     }
 
-    public static UserDetailsImpl build(User user) {
+    public static UserDetailsImpl build(User user) throws RequestException {
         List<GrantedAuthority> authorities = user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName().name()))
                 .collect(Collectors.toList());
@@ -48,6 +56,8 @@ public class UserDetailsImpl implements UserDetails {
                 user.getName(),
                 user.getSurname(),
                 user.getPassword(),
+                user.getGender(),
+                user.getUnit(),
                 authorities);
     }
 
@@ -74,6 +84,22 @@ public class UserDetailsImpl implements UserDetails {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     @Override
@@ -115,4 +141,5 @@ public class UserDetailsImpl implements UserDetails {
         UserDetailsImpl user = (UserDetailsImpl) o;
         return Objects.equals(id, user.id);
     }
+
 }

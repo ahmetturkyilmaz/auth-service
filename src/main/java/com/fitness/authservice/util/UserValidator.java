@@ -1,11 +1,11 @@
 package com.fitness.authservice.util;
 
 import com.fitness.authservice.exception.ExceptionMessages;
+import com.fitness.authservice.exception.RequestException;
 import com.fitness.authservice.exception.RequestValidationException;
 import com.fitness.authservice.model.User;
 import com.fitness.authservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -19,13 +19,14 @@ public class UserValidator {
     @Autowired
     UserRepository userRepository;
 
-    public void validateUser(User user) throws RequestValidationException {
+    public void validateUser(User user) throws RequestException {
         InternetAddress emailAddr = null;
 
         checkIfPasswordProper(user.getPassword());
         user.setPassword(StringUtils.trimAllWhitespace(user.getPassword()));
         user.setEmail(StringUtils.trimAllWhitespace(user.getEmail()));
         checkIfEmailExist(user.getEmail());
+        checkIfGenderAndUnitIsValid(user);
         try {
             emailAddr = new InternetAddress(user.getEmail());
             emailAddr.validate();
@@ -57,5 +58,14 @@ public class UserValidator {
             throw new RequestValidationException(ExceptionMessages.PASSWORD_IS_NOT_MATCHED, ExceptionMessages.PASSWORD_IS_NOT_MATCHED_CODE);
         }
 
+    }
+
+    private void checkIfGenderAndUnitIsValid(User user) throws RequestException {
+        if (!(user.getGender().equals("MALE") || user.getGender().equals("FEMALE"))) {
+            throw new RequestException("Given Infos are unvalid");
+        }
+        if (!(user.getUnit().equals("METRIC") || user.getUnit().equals("IMPERIAL"))) {
+            throw new RequestException("Given Infos are unvalid");
+        }
     }
 }

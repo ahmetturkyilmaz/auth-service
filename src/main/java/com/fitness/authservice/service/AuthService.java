@@ -1,6 +1,6 @@
 package com.fitness.authservice.service;
 
-import com.fitness.authservice.exception.RequestValidationException;
+import com.fitness.authservice.exception.RequestException;
 import com.fitness.authservice.model.ERole;
 import com.fitness.authservice.model.Role;
 import com.fitness.authservice.model.User;
@@ -48,7 +48,7 @@ public class AuthService {
     @Autowired
     UserValidator userValidator;
 
-    public JwtResponse authenticateUser(LoginRequest loginRequest) {
+    public JwtResponse authenticateUser(LoginRequest loginRequest) throws RequestException {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
@@ -66,10 +66,12 @@ public class AuthService {
                 userDetails.getUsername(),
                 userDetails.getName(),
                 userDetails.getSurname(),
+                userDetails.getGender(),
+                userDetails.getUnit(),
                 roles);
     }
 
-    public String getJwtToken(Authentication authentication) {
+    public String getJwtToken(Authentication authentication) throws RequestException {
         return jwtUtils.generateJwtToken(authentication);
     }
 
@@ -78,10 +80,13 @@ public class AuthService {
     }
 
 
-    public String registerUser(SignupRequest signUpRequest) throws RequestValidationException {
-        // Create new user's account
-
-        User user = new User(signUpRequest.getEmail(), signUpRequest.getName(), signUpRequest.getSurname(), signUpRequest.getPassword());
+    public String registerUser(SignupRequest signUpRequest) throws RequestException {
+        User user = new User(signUpRequest.getEmail(),
+                signUpRequest.getName(),
+                signUpRequest.getSurname(),
+                signUpRequest.getPassword(),
+                signUpRequest.getGender(),
+                signUpRequest.getUnit());
         userValidator.validateUser(user);
         user.setPassword(encoder.encode(signUpRequest.getPassword()));
         Set<String> strRoles = signUpRequest.getRole();
@@ -118,4 +123,6 @@ public class AuthService {
         user.setCreatedAt(new Date());
         return userRepository.save(user).getEmail();
     }
+
+
 }

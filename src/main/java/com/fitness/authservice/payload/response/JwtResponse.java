@@ -1,78 +1,98 @@
 package com.fitness.authservice.payload.response;
 
+import com.fitness.authservice.model.Gender;
+import com.fitness.authservice.model.Unit;
+
 import java.util.List;
 
 public class JwtResponse {
-	private String accessToken;
-	private String type = "Bearer";
-	private String id;
-	private String email;
-	private String name;
-	private String surname;
-	private List<String> roles;
+    private String accessToken;
+    private String type = "Bearer";
+    private String id;
+    private String email;
+    private String name;
+    private String surname;
+    private String gender;
+    private String unit;
+    private List<String> roles;
 
-	public JwtResponse(String accessToken, String id, String email, String name, String surname, List<String> roles) {
-		this.accessToken = accessToken;
-		this.id = id;
-		this.email = email;
-		this.name = name;
-		this.surname = surname;
-		this.roles = roles;
-	}
+    public JwtResponse(String accessToken, String id, String email, String name, String surname, String gender, String unit, List<String> roles) {
+        this.accessToken = accessToken;
+        this.id = id;
+        this.email = email;
+        this.name = name;
+        this.surname = surname;
+        this.gender = gender;
+        this.unit = unit;
+        this.roles = roles;
+    }
 
-	public String getAccessToken() {
-		return accessToken;
-	}
+    public String getGender() {
+        return gender;
+    }
 
-	public void setAccessToken(String accessToken) {
-		this.accessToken = accessToken;
-	}
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public String getUnit() {
+        return unit;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
 
-	public String getId() {
-		return id;
-	}
+    public String getAccessToken() {
+        return accessToken;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
 
-	public String getName() {
-		return name;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public String getSurname() {
-		return surname;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setSurname(String surname) {
-		this.surname = surname;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public List<String> getRoles() {
-		return roles;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setRoles(List<String> roles) {
-		this.roles = roles;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
 }

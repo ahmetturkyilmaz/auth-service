@@ -4,7 +4,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,19 +27,31 @@ public class User extends BaseEntity {
     @Size(max = 120)
     private String password;
 
+    @NotBlank
+    private String gender;
+
+    @NotBlank
+    private String unit;
 
     private Set<Role> roles = new HashSet<>();
+
 
     public User() {
     }
 
-    public User(String email, String name, String surname, String password) {
+    public User(String email,
+                String name,
+                String surname,
+                String password,
+                String gender,
+                String unit) {
         this.email = email;
         this.name = name;
         this.surname = surname;
         this.password = password;
+        this.gender = gender;
+        this.unit = unit;
     }
-
 
     public String getEmail() {
         return email;
@@ -74,6 +85,22 @@ public class User extends BaseEntity {
         this.password = password;
     }
 
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
     public Set<Role> getRoles() {
         return roles;
     }
@@ -81,4 +108,5 @@ public class User extends BaseEntity {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
 }

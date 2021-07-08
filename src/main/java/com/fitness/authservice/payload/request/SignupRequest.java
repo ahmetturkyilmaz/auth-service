@@ -18,12 +18,34 @@ public class SignupRequest {
     @NotBlank
     @Size(max = 50)
     private String surname;
-    
+
     private Set<String> role;
-    
+
     @NotBlank
     @Size(min = 6, max = 40)
     private String password;
+
+    @NotBlank
+    private String gender;
+
+    @NotBlank
+    private String unit;
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
 
     public String getEmail() {
         return email;
@@ -52,16 +74,16 @@ public class SignupRequest {
     public String getPassword() {
         return password;
     }
- 
+
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
     public Set<String> getRole() {
-      return this.role;
+        return this.role;
     }
-    
+
     public void setRole(Set<String> role) {
-      this.role = role;
+        this.role = role;
     }
 }
